@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  web:
+    container_name: products-web
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - "./app:/usr/share/nginx"
+      - "./nginx:/etc/nginx/conf.d"
+    environment:
+      VIRTUAL_HOST: products-app.local
+      VIRTUAL_PORT: 80
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: products
+      DB_USER: root
+      DB_PASS: root
+
+  mysql:
+    container_name: products-db
+    image: mysql:8
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    command: --default-authentication-plugin=mysql_native_password --innodb_use_native_aio=0
+
+  php:
+    container_name: php74
+    image: bitnami/php-fpm:7.4
+    volumes:
+      - "./app:/usr/share/nginx"
