@@ -12,12 +12,9 @@ spl_autoload_register(function ($class) {
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 
+$router = new \App\Router('api');
+$router->get('/products', fn() => "Hello world with GET request");
+$router->post('/products', fn() => "Hello world with POST request");
+
 header("Content: application/json");
-
-$response = [
-    'data' => 'Hello world',
-    'message' => 'Success',
-    'location' => $url['path']
-];
-
-echo json_encode($response);
+echo json_encode($router->run($url['path']));
