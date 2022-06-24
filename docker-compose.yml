@@ -12,15 +12,10 @@ services:
     environment:
       VIRTUAL_HOST: products-app.local
       VIRTUAL_PORT: 80
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: products
-      DB_USER: root
-      DB_PASS: root
 
   mysql:
     container_name: products-db
-    image: mysql:8
+    image: mysql:5.6
     volumes:
       - "./mysql:/var/lib/mysql"
     environment:
@@ -29,6 +24,12 @@ services:
 
   php:
     container_name: php74
-    image: bitnami/php-fpm:7.4
+    image: devilbox/php-fpm:7.4-prod
     volumes:
       - "./app:/usr/share/nginx"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: products
+      DB_USER: root
+      DB_PASS: root
