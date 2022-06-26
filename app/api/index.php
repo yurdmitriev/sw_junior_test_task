@@ -16,9 +16,11 @@ spl_autoload_register(function ($class) {
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 
-$router = new \App\Router('api');
-$router->get('/products', fn() => "Hello world with GET request");
-$router->post('/products', fn() => "Hello world with POST request");
+$app = new \App\App('api');
+$app->router->get('/products', [\App\Controllers\ProductsController::class, 'list']);
+$app->router->post('/products', [\App\Controllers\ProductsController::class, 'add']);
 
-header("Content: application/json");
-echo json_encode($router->run($url['path']));
+$response = $app->run($url['path']);
+header("Content-Type: application/json");
+http_response_code($app->code);
+echo json_encode($response);
