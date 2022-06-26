@@ -3,7 +3,11 @@
 const NAMESPACE_ROOT = 'App';
 
 spl_autoload_register(function ($class) {
-    $class = str_replace(['\\', NAMESPACE_ROOT], [DIRECTORY_SEPARATOR, 'src'], $class);
+    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    $pos = strpos($class, NAMESPACE_ROOT);
+    if ($pos !== false) {
+        $class = substr_replace($class, 'src', $pos, strlen(NAMESPACE_ROOT));
+    }
     $file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
 
     if (file_exists($file))
