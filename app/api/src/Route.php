@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Util\Error;
+
 class Route {
     private string $method;
     private string $uri;
@@ -16,8 +18,24 @@ class Route {
         return $this->uri;
     }
 
-    public function run () {
-        return call_user_func($this->action);
+    public function run() {
+        $response = [];
+
+        if (is_array($this->action)) {
+            try {
+                $object = null;
+                $method = new \ReflectionMethod($this->action[0], $this->action[1]);
+
+                if (!$method->isStatic()) $object = new $this->action[0];
+
+                $response = $method->invoke($object);
+            } catch (\ReflectionException $e) {
+                throw new Error();
+            }
+
+        } else $response = call_user_func($this->action);
+
+        return $response;
     }
 
     public function __construct(string $method, string $uri, $action, ?array $params = null) {
