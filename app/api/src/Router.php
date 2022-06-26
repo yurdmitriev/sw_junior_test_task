@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Util\Error;
+
 class Router {
     private string $prefix;
     private array $routes = [];
@@ -27,7 +29,7 @@ class Router {
             }
         }
 
-        return null;
+        throw new Error("This method doesn't exist", 404);
     }
 
     private function prepareUri(string $url): string {
