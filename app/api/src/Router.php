@@ -8,16 +8,16 @@ class Router {
     private string $prefix;
     private array $routes = [];
 
-    private function addRoute($method, $uri, $action): void {
+    private function register($method, $uri, $action): void {
         $this->routes[] = new Route($method, $uri, $action);
     }
 
     public function get(string $uri, $action): void {
-        $this->addRoute('GET', $uri, $action);
+        $this->register('GET', $uri, $action);
     }
 
     public function post(string $uri, $action): void {
-        $this->addRoute('POST', $uri, $action);
+        $this->register('POST', $uri, $action);
     }
 
     public function run(string $url) {
