@@ -33,3 +33,11 @@ services:
       DB_NAME: products
       DB_USER: root
       DB_PASS: root
+
+  pma:
+    container_name: products-pma
+    image: phpmyadmin:latest
+    ports:
+      - "9000:80"
+    environment:
+      PMA_HOST: mysql
