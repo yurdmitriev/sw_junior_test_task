@@ -2,14 +2,21 @@
 
 namespace App\Controllers;
 
-use App\Util\Error;
+use App\Models\Product;
+use App\Util\Request;
 
 class ProductsController {
-    public function list(): array {
-        return ['Hello world from ' . __CLASS__];
+    public function list() {
+        return Product::list();
     }
 
-    public function add() {
-        return "There must be a new product";
+    public function add(Request $request) {
+        $product = new Product(
+            $request->post['sku'],
+            $request->post['name'],
+            $request->post['price']
+        );
+
+        return $product->save();
     }
 }
