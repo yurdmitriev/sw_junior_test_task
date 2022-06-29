@@ -27,13 +27,12 @@ class Route {
                 $method = new \ReflectionMethod($this->action[0], $this->action[1]);
 
                 if (!$method->isStatic()) $object = new $this->action[0];
-
-                $response = $method->invoke($object);
+                $response = $method->invokeArgs($object, $this->params);
             } catch (\ReflectionException $e) {
                 throw new Error();
             }
 
-        } else $response = call_user_func($this->action);
+        } else $response = call_user_func($this->action, $this->params);
 
         return $response;
     }
