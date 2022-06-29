@@ -8,7 +8,7 @@ class Route {
     private string $method;
     private string $uri;
     private $action;
-    private ?array $params;
+    private array $params;
 
     public function getMethod(): string {
         return $this->method;
@@ -37,10 +37,10 @@ class Route {
         return $response;
     }
 
-    public function __construct(string $method, string $uri, $action, ?array $params = null) {
+    public function __construct(string $method, string $uri, $action, array $params = []) {
         $this->method = $method;
         $this->uri = $uri;
         $this->action = $action;
-        $this->params = $params;
+        $this->params = ['request' => \App\App::request()];
     }
 }
