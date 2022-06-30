@@ -19,4 +19,8 @@ class ProductsController {
 
         return $product->save();
     }
+
+    public function listTypes() {
+        return Product::types();
+    }
 }

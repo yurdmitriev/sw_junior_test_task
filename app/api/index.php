@@ -19,6 +19,7 @@ $url = parse_url($_SERVER['REQUEST_URI']);
 $app = new \App\App('api');
 $app->router->get('/products', [\App\Controllers\ProductsController::class, 'list']);
 $app->router->post('/products', [\App\Controllers\ProductsController::class, 'add']);
+$app->router->get('/products/types', [\App\Controllers\ProductsController::class, 'listTypes']);
 
 $response = $app->run($url['path']);
 header("Content-Type: application/json");

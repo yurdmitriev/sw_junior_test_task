@@ -19,8 +19,6 @@ class Route {
     }
 
     public function run() {
-        $response = [];
-
         if (is_array($this->action)) {
             try {
                 $object = null;
