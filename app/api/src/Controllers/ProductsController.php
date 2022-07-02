@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Product;
+use App\Util\Error;
 use App\Util\Request;
 
 class ProductsController {
@@ -11,13 +12,23 @@ class ProductsController {
     }
 
     public function add(Request $request) {
-        $product = new Product(
-            $request->post['sku'],
-            $request->post['name'],
-            $request->post['price']
-        );
+        $params = $request->post;
+        $class = "\\App\\Models\\Products\\" . $params['type'];
+        unset($params['type']);
 
-        return $product->save();
+        foreach (['sku', 'name', 'price'] as $field) {
+            $$field = $params[$field];
+            unset($params[$field]);
+        }
+
+        try {
+            $product = new $class ($sku, $name, $price, $params);
+            return $product->save()->getProperties();
+        } catch (\Error $e) {
+            throw new Error("Unknown product type", 404);
+        } catch (\Throwable $e) {
+            throw new Error();
+        }
     }
 
     public function listTypes() {

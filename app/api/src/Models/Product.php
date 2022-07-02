@@ -24,7 +24,7 @@ abstract class Product extends Model {
         $this->type = Type::search(['title' => basename(str_replace('\\', '/', get_called_class()))]);
     }
 
-    public function __serialize(): array {
+    public function getProperties(): array {
         return [
             'sku' => $this->sku,
             'name' => $this->name,
