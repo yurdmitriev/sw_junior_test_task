@@ -91,9 +91,7 @@ class Query {
 
             return $this->limit == 1 ? array_pop($result) : $result;
         } else {
-            $query->execute();
-            return $this->pdo->lastInsertId();
+            return $query->execute();
         }
-
     }
 }
