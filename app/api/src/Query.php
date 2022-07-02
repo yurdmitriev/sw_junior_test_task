@@ -21,7 +21,16 @@ class Query {
         if ($this->command) throw new Error();
         else $this->command = "SELECT";
 
-        if (!empty($columns)) $fields = implode(', ', $columns);
+        if (!empty($columns)) {
+            $temp = [];
+
+            foreach ($columns as $column => $alias) {
+                if (is_numeric($column)) $temp[] = $alias;
+                else $temp[] = "$column as $alias";
+            }
+
+            $fields = implode(', ', $temp);
+        }
 
         $this->sql .= "SELECT $fields FROM $table";
         return $this;
