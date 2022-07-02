@@ -46,6 +46,25 @@ class Query {
         return $this;
     }
 
+    public function join(string $table, string $on, string $base): self {
+        $this->sql .= " JOIN {$table} ON {$table}.{$on} = {$base}";
+        return $this;
+    }
+
+    public function where(array $filters): self {
+        if (!empty($filters)) {
+            $conditions = [];
+
+            foreach ($filters as $column => $value) {
+                $conditions[] = "$column = '$value'";
+            }
+
+            $this->sql .= " WHERE " . implode('AND ', $conditions);
+        }
+
+        return $this;
+    }
+
     public function limit(int $count = 0, int $offset = 0): self {
         if ($count || $offset) $this->sql .= " LIMIT $offset, $count";
         $this->limit = $count;
