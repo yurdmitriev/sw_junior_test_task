@@ -10,6 +10,7 @@ abstract class Product extends Model {
     public string $sku;
     public string $name;
     public float $price;
+    private Type $type;
 
     public function __construct(string $sku, string $name, float $price, array $params) {
         $this->sku = $sku;
@@ -19,6 +20,8 @@ abstract class Product extends Model {
         foreach ($params as $param => $value) {
             if (property_exists($this, $param)) $this->$param = $value;
         }
+
+        $this->type = Type::search(['title' => basename(str_replace('\\', '/', get_called_class()))]);
     }
 
     public function __serialize(): array {
@@ -41,6 +44,6 @@ abstract class Product extends Model {
     }
 
     public static function types() {
-        return App::db()->select('Types', ['id', 'title'])->run();
+        return Type::list();
     }
 }
