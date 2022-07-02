@@ -47,7 +47,7 @@ class Query {
     }
 
     public function limit(int $count = 0, int $offset = 0): self {
-        if ($count || $offset) $this->sql .= " LIMIT ($offset, $count)";
+        if ($count || $offset) $this->sql .= " LIMIT $offset, $count";
         $this->limit = $count;
         $this->offset = $offset;
 
