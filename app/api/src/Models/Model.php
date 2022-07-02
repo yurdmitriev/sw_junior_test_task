@@ -14,4 +14,8 @@ abstract class Model {
     public function save() {
         return App::db()->insert(static::$table, (array)$this)->run();
     }
+
+    public static function search(array $filters) {
+        return App::db()->select([static::$table => []])->where($filters)->run();
+    }
 }
