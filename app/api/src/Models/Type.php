@@ -6,9 +6,11 @@ use App\App;
 
 class Type extends Model {
     protected static string $table = "Types";
+    private static string $attributesTable = "Attributes";
 
     public int $id;
     public string $title;
+    public array $attributes;
 
     public static function search(array $filters = []): self {
         $raw = App::db()->select([self::$table => []]);
@@ -32,8 +34,17 @@ class Type extends Model {
         return App::db()->select([self::$table => ['id', 'title']])->many();
     }
 
+    private static function attributes(int $id): array {
+        return App::db()
+            ->select([self::$attributesTable => []])
+            ->where(self::$attributesTable, 'id', ['bind' => 'TypeAttributes', 'on' => 'attribute'])
+            ->where('TypeAttributes', 'type', $id)
+            ->many();
+    }
+
     public function __construct(int $id, string $title) {
         $this->id = $id;
         $this->title = $title;
+        $this->attributes = self::attributes($id);
     }
 }
