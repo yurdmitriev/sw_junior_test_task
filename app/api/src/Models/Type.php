@@ -10,13 +10,26 @@ class Type extends Model {
     public int $id;
     public string $title;
 
-    public static function search(array $filters): self {
-        $raw = App::db()->select(self::$table)->where($filters)->limit(1)->run();
+    public static function search(array $filters = []): self {
+        $raw = App::db()->select([self::$table => []]);
+
+        foreach ($filters as $column => $value) {
+            if (is_array($value)) {
+                $raw = $raw->where(
+                    $column,
+                    $value['value'],
+                    $value['connects'] ?? 'AND',
+                    $value['operator'] ?? '='
+                );
+            } else $raw = $raw->where(self::$table, $column, $value);
+        }
+
+        $raw = $raw->one();
         return new self($raw['id'], $raw['title']);
     }
 
     public static function list() {
-        return App::db()->select(self::$table, ['id', 'title'])->run();
+        return App::db()->select([self::$table => ['id', 'title']])->many();
     }
 
     public function __construct(int $id, string $title) {
