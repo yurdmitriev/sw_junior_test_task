@@ -1,12 +1,12 @@
 <template>
   <header class="container p-3 d-flex align-items-center justify-content-between border-bottom">
     <h1>{{ $route.meta.title }}</h1>
-    <div class="buttons d-flex gap-2" v-if="$route.path === '/'">
+    <div class="buttons d-flex gap-2" v-if="$route.name === 'home'">
       <button type="button" class="btn btn-primary" @click="$router.push('/add-product')">Add</button>
-      <button type="button" class="btn btn-danger">Mass delete</button>
+      <button type="button" class="btn btn-danger" :disabled="store.selected.length === 0">Mass delete</button>
     </div>
-    <div class="buttons d-flex gap-2" v-if="$route.path === '/add-product'">
-      <button type="button" class="btn btn-primary">Add</button>
+    <div class="buttons d-flex gap-2" v-if="$route.name === 'add'">
+      <button type="button" class="btn btn-primary" @click="submitForm">Add</button>
       <button type="button" class="btn btn-danger" @click="$router.push('/')">Cancel</button>
     </div>
   </header>
@@ -17,6 +17,19 @@
 </template>
 
 <script>
+import {store} from "@/store";
+
+export default {
+  data() {
+    return {
+      store
+    }
+  },
+  methods: {
+    submitForm() {
+    }
+  }
+}
 </script>
 
 <style>
