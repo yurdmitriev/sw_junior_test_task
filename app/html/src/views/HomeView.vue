@@ -1,8 +1,32 @@
 <template>
   <main class="home">
-    <section class="list row row-cols-4">
-      <product-card class="col" sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
-                    @set="listenCheckbox"/>
+    <section class="list row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3 g-lg-4">
+      <div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div><div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div>
+      <div class="col">
+        <product-card sku="test" name="Testing product" price="1500 $" attribute="Dimensions: 10x10x5"
+                      @set="listenCheckbox"/>
+      </div>
     </section>
   </main>
 </template>
