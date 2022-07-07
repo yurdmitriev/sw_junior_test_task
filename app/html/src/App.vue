@@ -3,20 +3,12 @@
     <div class="container flex-nowrap g-4">
       <h1 class="m-0">{{ $route.meta.title }}</h1>
       <div class="buttons d-flex gap-2" v-if="$route.name === 'home'">
-        <button type="button" class="btn btn-primary" @click="$router.push('/add-product')">
-          <i class="bi bi-file-earmark-plus d-sm-none"></i><span class="d-none d-sm-inline">ADD</span>
-        </button>
-        <button type="button" class="btn btn-danger" :disabled="store.selected.length === 0" @click="massDelete">
-          <i class="bi bi-trash d-sm-none"></i><span class="d-none d-sm-inline">MASS DELETE</span>
-        </button>
+        <button type="button" class="btn btn-primary" @click="$router.push('/add-product')">ADD</button>
+        <button type="button" class="btn btn-danger" @click="massDelete">MASS DELETE</button>
       </div>
       <div class="buttons d-flex gap-2" v-if="$route.name === 'add'">
-        <button type="button" class="btn btn-primary" @click="submitForm">
-          <i class="bi bi-cloud-download d-sm-none"></i><span class="d-none d-sm-inline">ADD</span>
-        </button>
-        <button type="button" class="btn btn-danger" @click="cancel">
-          <i class="bi bi-x-circle d-sm-none"></i><span class="d-none d-sm-inline">CANCEL</span>
-        </button>
+        <button type="button" class="btn btn-primary" @click="submitForm">Save</button>
+        <button type="button" class="btn btn-danger" @click="cancel">Cancel</button>
       </div>
     </div>
   </header>
@@ -45,7 +37,7 @@ export default {
   },
   methods: {
     massDelete() {
-      this.store.deleteProducts(this.store.selected);
+      if (this.store.selected) this.store.deleteProducts(this.store.selected);
     },
     cancel() {
       const form = document.querySelector('#product_form');
