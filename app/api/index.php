@@ -23,5 +23,6 @@ $app->router->get('/products/types', [\App\Controllers\ProductsController::class
 
 $response = $app->run($url['path']);
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 http_response_code($app->code);
 echo json_encode($response);
