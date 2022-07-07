@@ -64,8 +64,9 @@ class Query {
         if (is_array($value)) {
             $temp['value'] = "$table.$column = {$value['bind']}.{$value['on']}";
         } else {
-            $temp['value'] = "$table.$column $operator :$table$column";
-            $this->params[":$table$column"] = $value;
+            $num = count($this->where);
+            $temp['value'] = "$table.$column $operator :$table$column$num";
+            $this->params[":$table$column$num"] = $value;
         }
 
         if (!isset($this->fields[$table])) $this->fields[$table] = null;
