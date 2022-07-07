@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div id="dvd" class="group" data-hint="size in MB">
+      <div id="dvd" class="group" data-hint="size">
         <div class="row g-3 align-items-center mb-3">
           <div class="col-auto flex-fill">
             <label for="size" class="form-label">Size</label>
@@ -52,7 +52,7 @@
         </div>
       </div>
 
-      <div id="book" class="group" data-hint="weight in KG">
+      <div id="book" class="group" data-hint="weight">
         <div class="row g-3 align-items-center mb-3">
           <div class="col-auto flex-fill">
             <label for="weight" class="form-label">Weight</label>
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div id="furniture" class="group" data-hint="dimensions in HxWxL format">
+      <div id="furniture" class="group" data-hint="dimensions">
         <div class="row g-3 align-items-center mb-3">
           <div class="col-auto flex-fill">
             <label for="height" class="form-label">Height</label>
@@ -90,7 +90,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <small class="form-text">Please provide <span ref="hint">required fields</span></small>
+        <small class="form-text">Please, provide <span ref="hint">required fields</span></small>
       </div>
     </form>
   </main>

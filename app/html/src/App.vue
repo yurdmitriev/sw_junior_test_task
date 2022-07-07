@@ -56,6 +56,7 @@ export default {
       const form = document.querySelector('#product_form');
       const data = new FormData(form);
       const toast = new Toast(this.$refs.toast, {delay: 2000});
+      const empty = [];
 
       this.$refs.toast.addEventListener('hidden.bs.toast', function (e) {
         e.target.className = 'toast';
@@ -64,7 +65,8 @@ export default {
       for (let [key, value] of data) {
         if (value) continue;
 
-        document.querySelector(`#${key}`).classList.add('is-invalid')
+        document.querySelector(`#${key}`).classList.add('is-invalid');
+        empty.push(key);
       }
 
       if (form.checkValidity()) {
@@ -80,13 +82,13 @@ export default {
               } else {
                 this.$refs.toast.classList.add('bg-danger', 'text-white');
               }
-              return response.json();
-            })
-            .then(json => {
-              console.log(json);
-              this.$refs.toastBody.innerText = json.message;
-              toast.show();
             });
+      } else {
+        if (empty) this.$refs.toastBody.innerText = "Please, submit required data";
+        else this.$refs.toastBody.innerText = "Please, provide the data of indicated type";
+
+        this.$refs.toast.classList.add('bg-danger', 'text-white');
+        toast.show();
       }
     }
   }
