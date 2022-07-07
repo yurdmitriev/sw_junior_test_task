@@ -2,6 +2,13 @@ import {reactive} from "vue";
 
 export const store = reactive({
     selected: [],
+    products: [],
+    getProducts() {
+        fetch('http://products-app.local/api/products')
+            .then(response => response.json())
+            .then(data => this.products = data.data)
+            .catch(e => console.log(e));
+    },
     deleteProducts(products) {
         let arrStr = products.map(function(el, idx) {
             return 'items[' + idx + ']=' + el;
@@ -9,6 +16,10 @@ export const store = reactive({
 
         fetch('http://products-app.local/api/products?' + arrStr, {
             method: 'DELETE'
-        }).then(response => response.json()).then(data => console.log(data))
+        })
+            .then(() => {
+                this.getProducts();
+                this.selected = [];
+            })
     }
 })
