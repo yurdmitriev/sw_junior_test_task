@@ -25,5 +25,10 @@ $app->router->get('/products/types', [\App\Controllers\ProductsController::class
 $response = $app->run($url['path']);
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    die();
+}
 http_response_code($app->code);
 echo json_encode($response);
