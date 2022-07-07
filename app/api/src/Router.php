@@ -20,6 +20,10 @@ class Router {
         $this->register('POST', $uri, $action);
     }
 
+    public function delete(string $uri, $action): void {
+        $this->register('DELETE', $uri, $action);
+    }
+
     public function run(string $url) {
         $uri = $this->prepareUri($url);
 
