@@ -70,7 +70,7 @@ export default {
       }
 
       if (form.checkValidity()) {
-        fetch('http://products-app.local/api/products', {
+        fetch('/api/products', {
           method: 'POST',
           body: data
         })

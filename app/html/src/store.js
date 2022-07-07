@@ -4,7 +4,7 @@ export const store = reactive({
     selected: [],
     products: [],
     getProducts() {
-        fetch('http://products-app.local/api/products')
+        fetch('/api/products')
             .then(response => response.json())
             .then(data => this.products = data.data)
             .catch(e => console.log(e));
@@ -14,7 +14,7 @@ export const store = reactive({
             return 'items[' + idx + ']=' + el;
         }).join('&');
 
-        fetch('http://products-app.local/api/products?' + arrStr, {
+        fetch('/api/products?' + arrStr, {
             method: 'DELETE'
         })
             .then(() => {
