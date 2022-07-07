@@ -100,19 +100,36 @@
 export default {
   methods: {
     typeListener(e) {
+      const controlSelector = 'input, textarea, select';
       let selected = document.querySelector(`#${e.target.value.toLowerCase()}`)
-      let groups = document.querySelectorAll("#product_form .group");
 
-      for (let group of groups) {
+      for (let group of document.querySelectorAll('#product_form .group')) {
         group.style.display = 'none';
+
+        for (let input of group.querySelectorAll(controlSelector)) {
+          input.disabled = true
+        }
       }
 
-      selected.style.display = '';
-      this.$refs.hint.textContent = selected.dataset.hint;
+      for (let input of selected.querySelectorAll(controlSelector)) {
+        input.disabled = false;
+      }
+
+      if (selected) {
+        selected.style.display = '';
+        this.$refs.hint.style.display = '';
+        this.$refs.hint.textContent = selected.dataset.hint;
+      } else {
+        this.$refs.hint.style.display = 'none';
+      }
     }
   },
   mounted() {
     this.$refs.switcher.dispatchEvent(new Event('change'));
+
+    for (let input of document.querySelectorAll('input, textarea, select')) {
+      input.addEventListener('input', e => e.target.classList.remove('is-invalid'))
+    }
   }
 }
 </script>
