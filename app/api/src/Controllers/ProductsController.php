@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\App;
 use App\Models\Product;
 use App\Util\Error;
 use App\Util\Request;
@@ -20,6 +21,10 @@ class ProductsController {
             $$field = $params[$field];
             unset($params[$field]);
         }
+
+        $existing = Product::search(['sku' => $sku]);
+
+        if ($existing) throw new Error('Product already exists', 400);
 
         try {
             $product = new $class ($sku, $name, $price, $params);
