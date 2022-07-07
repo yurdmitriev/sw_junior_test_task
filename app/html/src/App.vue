@@ -6,7 +6,7 @@
         <button type="button" class="btn btn-primary" @click="$router.push('/add-product')">
           <i class="bi bi-file-earmark-plus d-sm-none"></i><span class="d-none d-sm-inline">ADD</span>
         </button>
-        <button type="button" class="btn btn-danger" :disabled="store.selected.length === 0">
+        <button type="button" class="btn btn-danger" :disabled="store.selected.length === 0" @click="massDelete">
           <i class="bi bi-trash d-sm-none"></i><span class="d-none d-sm-inline">MASS DELETE</span>
         </button>
       </div>
@@ -44,6 +44,9 @@ export default {
     }
   },
   methods: {
+    massDelete() {
+      this.store.deleteProducts(this.store.selected);
+    },
     cancel() {
       const form = document.querySelector('#product_form');
       if (form) form.reset();
