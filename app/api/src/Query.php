@@ -58,6 +58,15 @@ class Query {
         return $this;
     }
 
+    public function delete(string $from): self {
+        if ($this->command) throw new Error();
+        else $this->command = "DELETE";
+
+        $this->fields[$from] = [];
+
+        return $this;
+    }
+
     public function where(string $table, string $column, $value, string $logical = "AND", string $operator = '='): self {
         $temp = [];
 
@@ -158,7 +167,9 @@ class Query {
                 break;
 
             case "DELETE":
-                // TODO: Implement a DELETE method
+                $tables = implode(', ', array_keys($this->fields));
+
+                $this->sql = "DELETE FROM $tables";
                 break;
         }
 
