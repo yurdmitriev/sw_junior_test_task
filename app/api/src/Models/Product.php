@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\App;
+use App\Query;
 use App\Util\Error;
 
 abstract class Product extends Model {
@@ -71,6 +72,21 @@ abstract class Product extends Model {
         }
 
         return $this;
+    }
+
+    public static function delete(array $conditions) {
+        $query = App::db()->delete(static::$table);
+
+        foreach ($conditions as $column => $value) {
+            if (is_array($value)) {
+                foreach ($value as $val)
+                    $query = $query->where(static::$table, $column, $val, 'OR');
+            } else {
+                $query = $query->where(static::$table, $column, $value, 'OR');
+            }
+        }
+
+        return $query->run();
     }
 
     public static function list(): array {

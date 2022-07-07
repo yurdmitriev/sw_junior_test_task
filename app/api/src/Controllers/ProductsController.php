@@ -36,6 +36,13 @@ class ProductsController {
         }
     }
 
+    public function remove(Request $request) {
+        $params = $request->get;
+        if (!isset($params['items'])) throw new Error("Empty request", 400);
+
+        return Product::delete(['sku' => $params['items']]);
+    }
+
     public function listTypes() {
         return Product::types();
     }
