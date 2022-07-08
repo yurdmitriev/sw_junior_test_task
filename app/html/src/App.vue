@@ -37,7 +37,12 @@ export default {
   },
   methods: {
     massDelete() {
-      if (this.store.selected) this.store.deleteProducts(this.store.selected);
+      for (const item of document.querySelectorAll('.delete-checkbox')) {
+        if (item.checked) this.store.selected.push(item.value);
+      }
+      
+      if (this.store.selected.length > 0)
+        this.store.deleteProducts(this.store.selected);
     },
     cancel() {
       const form = document.querySelector('#product_form');
