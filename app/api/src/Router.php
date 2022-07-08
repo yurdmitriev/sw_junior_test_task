@@ -4,11 +4,27 @@ namespace App;
 
 use App\Util\Error;
 
+/**
+ * Class that handle routing of application
+ */
 class Router {
+    /**
+     * @var string
+     */
     private string $prefix;
+    /**
+     * @var array
+     */
     private array $routes = [];
 
-    private function register($method, $uri, $action): void {
+    /**
+     * Register a new route
+     * @param string $method Request method
+     * @param string $uri Regex of request uri
+     * @param mixed $action array like [Controller::class, 'method'] or callback function
+     * @return void
+     */
+    private function register(string $method, string $uri, $action): void {
         $this->routes[] = new Route($method, $uri, $action);
     }
 
@@ -24,6 +40,12 @@ class Router {
         $this->register('DELETE', $uri, $action);
     }
 
+    /**
+     * Run route that matches requested url
+     * @param string $url request url
+     * @return mixed
+     * @throws Error
+     */
     public function run(string $url) {
         $uri = $this->prepareUri($url);
 
@@ -36,6 +58,11 @@ class Router {
         throw new Error("This method doesn't exist", 404);
     }
 
+    /**
+     * Remove prefix from requested url ot find correct route
+     * @param string $url
+     * @return string prepared url
+     */
     private function prepareUri(string $url): string {
         if ($this->prefix) {
             $prefix = trim($this->prefix, '/');
@@ -46,7 +73,10 @@ class Router {
         return $url;
     }
 
-    public function __construct($prefix = '') {
+    /**
+     * @param string $prefix prefix of url
+     */
+    public function __construct(string $prefix = '') {
         $this->prefix = trim($prefix);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Util;
 
+/**
+ * Contains GET and POST parameters
+ */
 class Request {
     public array $get;
     public array $post;

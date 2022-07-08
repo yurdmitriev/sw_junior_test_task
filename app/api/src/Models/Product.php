@@ -3,18 +3,48 @@
 namespace App\Models;
 
 use App\App;
-use App\Query;
 use App\Util\Error;
 
+/**
+ * Basic class for all products
+ */
 abstract class Product extends Model {
+    /**
+     * @var string Table name
+     */
     protected static string $table = "Products";
+
+    /**
+     * @var string Name of table that contains values of attributes of products
+     */
     protected static string $valuesTable = "ProductAttributes";
 
+    /**
+     * @var string
+     */
     public string $sku;
+
+    /**
+     * @var string
+     */
     public string $name;
+
+    /**
+     * @var float
+     */
     public float $price;
+
+    /**
+     * @var Type Stores information about type: title, id in the database, attributes
+     */
     private Type $type;
 
+    /**
+     * @param string $sku
+     * @param string $name
+     * @param float $price
+     * @param array $params
+     */
     public function __construct(string $sku, string $name, float $price, array $params) {
         $this->sku = $sku;
         $this->name = $name;
@@ -27,6 +57,10 @@ abstract class Product extends Model {
         $this->type = Type::search(['title' => basename(str_replace('\\', '/', get_called_class()))]);
     }
 
+    /**
+     * Represents product as array
+     * @return array
+     */
     public function getProperties(): array {
         return [
             'sku' => $this->sku,
@@ -36,8 +70,17 @@ abstract class Product extends Model {
         ];
     }
 
+    /**
+     * Represents attributes as single string
+     * @return string
+     */
     public abstract function getAttribute(): string;
 
+    /**
+     * Save logic for products
+     * @return $this saved object
+     * @throws Error
+     */
     public function save(): Product {
         // checking if product exists
         $item = App::db()
@@ -55,6 +98,9 @@ abstract class Product extends Model {
                 ])
                 ->run();
 
+            // if query is failed
+            if ($itemResult === false) throw new Error();
+
             foreach ($this->type->attributes as $attribute) {
                 $title = $attribute['title'];
                 App::db()
@@ -65,15 +111,19 @@ abstract class Product extends Model {
                     ])
                     ->run();
             }
-
-            if ($itemResult === false) throw new Error();
         } else {
-            // update
+            // TODO: Implement update logic for products
         }
 
         return $this;
     }
 
+    /**
+     * Deleting logic of products
+     * @param array $conditions array with columns as keys and values that need to be removed
+     * @return array|bool|mixed|void|null
+     * @throws Error
+     */
     public static function delete(array $conditions) {
         $query = App::db()->delete(static::$table);
 
@@ -89,6 +139,11 @@ abstract class Product extends Model {
         return $query->run();
     }
 
+    /**
+     * Get list of products
+     * @return array list of products
+     * @throws Error
+     */
     public static function list(): array {
         $list = App::db()->select([static::$table => []])->order('sku')->many();
         $result = [];
@@ -126,6 +181,10 @@ abstract class Product extends Model {
         return $result;
     }
 
+    /**
+     * Get all available types of products
+     * @return array|bool|mixed|void|null
+     */
     public static function types() {
         return Type::list();
     }

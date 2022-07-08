@@ -16,6 +16,7 @@ spl_autoload_register(function ($class) {
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 
+// init application for url's like: /api/query
 $app = new \App\App('api');
 $app->router->get('/products', [\App\Controllers\ProductsController::class, 'list']);
 $app->router->post('/products', [\App\Controllers\ProductsController::class, 'add']);

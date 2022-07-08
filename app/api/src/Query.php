@@ -4,23 +4,74 @@ namespace App;
 
 use App\Util\Error;
 
+/**
+ * SQL builder built over \PDO class
+ */
 class Query {
     private \PDO $pdo;
+
+    /**
+     * @var string built sql
+     */
     private string $sql = '';
+
+    /**
+     * @var string Name of command: SELECT, INSERT, DELETE, etc.
+     */
     private string $command = '';
+
+    /**
+     * @var int limit results
+     */
     private int $limit = 0;
+
+    /**
+     * @var int query offset
+     */
     private int $offset = 0;
+
+    /**
+     * @var array fields used in current query
+     */
     private array $fields = [];
+
+    /**
+     * @var array where condition fields
+     */
     private array $where = [];
+
+    /**
+     * @var \PDOStatement instance of \PDOStatement
+     */
     private \PDOStatement $statement;
+
+    /**
+     * @var array placeholders and values to prepare queries
+     */
     private array $params = [];
+
+    /**
+     * @var string columns used to sort results
+     */
     private string $orderColumn;
+
+    /**
+     * @var string sorting direction
+     */
     private string $orderDir = 'ASC';
 
+    /**
+     * @param \PDO $pdo
+     */
     public function __construct(\PDO $pdo) {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @param array $fields
+     * @return $this
+     * @throws Error
+     */
     public function select(array $fields = []): self {
         if ($this->command) throw new Error();
         else $this->command = "SELECT";
@@ -42,6 +93,12 @@ class Query {
         return $this;
     }
 
+    /**
+     * @param string $table
+     * @param array $fields
+     * @return $this
+     * @throws Error
+     */
     public function insert(string $table, array $fields): self {
         if ($this->command) throw new Error();
         else $this->command = "INSERT";
@@ -58,6 +115,11 @@ class Query {
         return $this;
     }
 
+    /**
+     * @param string $from
+     * @return $this
+     * @throws Error
+     */
     public function delete(string $from): self {
         if ($this->command) throw new Error();
         else $this->command = "DELETE";
@@ -67,6 +129,14 @@ class Query {
         return $this;
     }
 
+    /**
+     * @param string $table
+     * @param string $column
+     * @param $value
+     * @param string $logical
+     * @param string $operator
+     * @return $this
+     */
     public function where(string $table, string $column, $value, string $logical = "AND", string $operator = '='): self {
         $temp = [];
 
@@ -86,6 +156,11 @@ class Query {
         return $this;
     }
 
+    /**
+     * @param $alias
+     * @param string $dir
+     * @return $this
+     */
     public function order($alias, string $dir = 'ASC'): self {
         if (is_array($alias)) $this->orderColumn = implode(', ', $alias);
         else $this->orderColumn = $alias;
@@ -93,6 +168,11 @@ class Query {
         return $this;
     }
 
+    /**
+     * Return single item
+     * @param int $offset
+     * @return array|bool|mixed|void|null
+     */
     public function one(int $offset = 0) {
         $this->limit = 1;
         $this->offset = $offset;
@@ -102,6 +182,12 @@ class Query {
         return $this->run();
     }
 
+    /**
+     * Return array of results
+     * @param int $limit array items limit
+     * @param int $offset offset
+     * @return array|bool|mixed|void|null
+     */
     public function many(int $limit = 0, int $offset = 0) {
         $this->limit = $limit;
         $this->offset = $offset;
@@ -111,12 +197,20 @@ class Query {
         return $this->run();
     }
 
+    /**
+     * Get raw SQL query
+     * @return string
+     */
     public function raw(): string {
         $this->prepare();
 
         return $this->statement->queryString;
     }
 
+    /**
+     * SQL query preparation
+     * @return void
+     */
     private function prepare(): void {
         switch ($this->command) {
             case "SELECT":
@@ -195,6 +289,11 @@ class Query {
         $this->statement = $this->pdo->prepare($this->sql);
     }
 
+    /**
+     * Execute built SQL query
+     * @param bool $dump debug query
+     * @return array|bool|mixed|void|null result of query
+     */
     public function run(bool $dump = false) {
         $this->prepare();
 

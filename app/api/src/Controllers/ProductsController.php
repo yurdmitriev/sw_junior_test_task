@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\App;
 use App\Models\Product;
 use App\Util\Error;
 use App\Util\Request;
